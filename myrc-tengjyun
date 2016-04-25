@@ -1,0 +1,132 @@
+#==============================================================================
+# add path function
+#==============================================================================
+variable_add() {
+    var=$1
+    dir=$2
+    if [ -d "${dir}" ] && [[ ":${!var}:" != *":${dir}:"* ]]
+    then
+        eval ${var}="${dir}:${!var}"
+    fi
+}
+
+#==============================================================================
+# For linux common environment
+#==============================================================================
+set -o vi
+PS1=$'\033[32m''${USER}'@`hostname -s`' : '$'\033[33m''${PWD}'$'\033[0m''
+> '
+PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u @ \h \[\e[33m\]\w\[\e[0m\]\n\
+$ '
+
+#==============================================================================
+# For linux environment
+#==============================================================================
+TENGJYUN="/mnt/hgfs/tengjyun/work/environment"
+# mercurial setting
+ROOT_MERCURIAL="/package/hg/bin/hg"
+variable_add PATH ${ROOT_MERCURIAL}/bin
+# tmux setting
+ROOT_LIBEVENT="/pj/grapher/package/libevent"
+ROOT_TMUX="/pj/grapher/package/tmux_1.5"
+variable_add LD_LIBRARY_PATH ${ROOT_LIBEVENT}/lib
+variable_add MANPATH ${ROOT_TMUX}/share/man
+variable_add PATH ${ROOT_LIBEVENT}/bin
+variable_add PATH ${ROOT_TMUX}/bin
+# ncftp setting
+ROOT_NCFTP="/home/tdbadm/package/ncftp"
+variable_add LD_LIBRARY_PATH ${ROOT_NCFTP}/lib
+variable_add PATH ${ROOT_NCFTP}/bin
+variable_add MANPATH ${ROOT_NCFTP}/share/man
+# python
+ROOT_PYTHON=""
+variable_add PATH ${ROOT_PYTHON}/bin
+# ncarg
+NCARG_ROOT="/package/ncar"
+variable_add PATH ${NCARG_ROOT}/bin
+# dmspath
+DMSPATH="/package/dms/dms.v4"
+# personal util
+variable_add PATH ${ROOT_NCFTP}/bin
+
+
+#==============================================================================
+# Export variable
+#==============================================================================
+export DMSPATH
+export NCARG_ROOT
+export LD_LIBRARY_PATH
+export MANPATH
+export PATH
+export TMOUT=0
+
+
+#==============================================================================
+# For alias
+#==============================================================================
+set -x
+unalias -a
+alias tengjyun="cd ${TENGJYUN}"
+alias ls="ls --color=auto"
+alias ll="ls -l"
+alias lt="ls -tl"
+alias la="ls -la"
+alias vi="vim -u ${TENGJYUN}/.vimrc_tengjyun"
+alias vim="vim -u ${TENGJYUN}/.vimrc_tengjyun"
+alias screen="screen -c ${TENGJYUN}/.screenrc"
+alias cdiff=".cdiff.py"
+alias grep="grep --color"
+alias dp="display"
+alias tmux="tmux -f ${TENGJYUN}/.tmuxrc"
+alias tmuxtan="tmux attach -t tangent || tmux new -s tangent"
+alias exptan="export DISPLAY=172.16.15.41:0.0"
+alias expnote="export DISPLAY=172.16.15.78:0.0"
+alias findgrep="find . -type d \( -path '*/.hg' -o -path '*/log' -o -path '*/tmp' \) -prune -o -type f \( -name '*\.log' \) -prune -o -print | xargs grep --color"
+alias findgragrep="find . -type d \( -path '*/.hg' -o -path '*/log' -o -path '*/gmeta' -o -path '*/pic' -o -path '*/tmp' -o -path '*/dat' -o -path '*/sync' -o -path '*/tydata' \) -prune -o -type f \( -name '*\.log' \) -prune -o -print | xargs grep --color"
+alias s3="sqlite3"
+set +x
+alias hg="hg "\
+"--config 'ui.username=TengJyun Jhang, IISI <tengjyun.jhang@iisigroup.com>' "\
+"--config 'http_proxy.no = 61.56.13.173,10.0.16.173,192.168.20.63,10.0.0.63' "\
+"--config 'web.cacerts = ${TENGJYUN}/mi_root_cacert.pem' "\
+"--config 'extensions.graphlog=' "\
+"--config 'extensions.color=' "\
+"--config 'extensions.hgext.extdiff=' "\
+"--config 'extensions.mq=' "\
+"--config 'extensions.rebase=' "\
+"--config 'extensions.pager=' "\
+"--config 'merge-tools.vimdiff.executable=vim' "\
+"--config 'merge-tools.vimdiff.args=-d \$base \$local \$output \$other +close +close' "\
+"--config 'extdiff.cmd.vimdiff=' "\
+"--config 'phases.publish=False' "\
+"--config 'pager.pager=LESS=''FRX'' less' "\
+"--config 'alias.vim=vimdiff' "\
+"--config 'alias.latest=log --limit 10' "\
+"--config 'alias.slog=log -G --template \"\033[0;33m{rev}\033[0m:\033[0;33m{node|short} \033[0m[\033[0;32m{branch}\033[0m] \033[0m{desc|firstline} \033[1;30m({date|date} by {author})\033[0m\n\"' "\
+"--config 'color.status.modified = cyan' "\
+"--config 'color.status.added = green' "\
+"--config 'color.status.removed = red' "\
+"--config 'color.status.deleted = yellow bold underline' "\
+"--config 'color.status.unknown = magenta bold underline' "\
+"--config 'color.status.ignored = black bold' "\
+"--config 'color.diff.diffline = none' "\
+"--config 'color.diff.extended = cyan' "\
+"--config 'color.diff.file_a = red' "\
+"--config 'color.diff.file_b = green' "\
+"--config 'color.diff.hunk = yellow bold' "\
+"--config 'color.diff.deleted = red' "\
+"--config 'color.diff.inserted = green' "\
+"--config 'color.diff.changed = white' "\
+"--config 'color.diff.traillingwhitespace = white_background' "
+set +x
+
+
+#==============================================================================
+# For language setting.
+#==============================================================================
+#export LANG=en_US.UTF8
+#export LC_ALL=en_US.UTF8
+#export LANG=zh_TW.UTF8
+#export LC_ALL=zh_TW.UTF8
+#export LANG=zh_TW.BIG5
+#export LC_ALL=zh_TW.BIG5

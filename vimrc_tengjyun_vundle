@@ -1,0 +1,382 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set global variable
+let g:vimtop = '/home/tengjyun/work/environment'
+let g:vimdir = g:vimtop . '/vundle_vim'
+let g:vimbundle = g:vimdir . '/bundle'
+let g:vimvundle = g:vimdir . '/bundle/vundle'
+let g:my_vimrc = 'vimrc_tengjyun_vundle'
+let g:abs_my_vimrc = g:vimtop . '/' . g:my_vimrc
+let g:vundle_readme = g:vimvundle . '/README.md'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vundle initialization
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Avoid modify this section, unless you are very sure of what you are doing
+
+" no vi-compatible
+set nocompatible
+
+" Setting up Vundle - the vim plugin bundler
+let iCanHazVundle=1
+if !filereadable(g:vundle_readme)
+    echo "Installing Vundle..."
+    echo ""
+    silent exec '!mkdir -p ' . g:vimbundle
+    silent exec '!git clone https://github.com/gmarik/vundle ' . g:vimvundle
+    let iCanHazVundle=0
+endif
+
+filetype off
+
+exec "set rtp+=" . g:vimvundle
+exec "call vundle#rc('" . g:vimbundle . "')"
+
+" let Vundle manage Vundle
+Plugin 'gmarik/vundle'
+
+" Active plugins
+" You can disable or add new ones here:
+
+" Better file browser
+Plugin 'scrooloose/nerdtree'
+" Code commenter
+Plugin 'scrooloose/nerdcommenter'
+" Class/module browser
+Plugin 'majutsushi/tagbar'
+" Code and files fuzzy finder
+Plugin 'kien/ctrlp.vim'
+" Extension to ctrlp, for fuzzy command finder
+Plugin 'fisadev/vim-ctrlp-cmdpalette'
+" Zen coding
+Plugin 'mattn/emmet-vim'
+" Pending tasks list
+Plugin 'fisadev/FixedTaskList.vim'
+" Surround
+Plugin 'tpope/vim-surround'
+" Autoclose
+Plugin 'Townk/vim-autoclose'
+" Python mode (indentation, doc, refactor, lints, code checking, motion and
+" operators, highlighting, run and ipdb breakpoints)
+Plugin 'klen/python-mode'
+" Better autocompletion
+Plugin 'Shougo/neocomplcache.vim'
+" Snippets manager (SnipMate), dependencies, and snippets repo
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'honza/vim-snippets'
+Plugin 'garbas/vim-snipmate'
+" Git/mercurial/others diff icons on the side of the file lines
+Plugin 'mhinz/vim-signify'
+" Paint css colors with the real color
+Plugin 'lilydjwg/colorizer'
+" Search results counter
+Plugin 'IndexedSearch'
+
+" Install plugins the first time vim runs
+if iCanHazVundle == 0
+    echo "Installing Plugins, please ignore key map error messages"
+    echo ""
+    :PluginInstall
+endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" allow plugins by file type (required for plugins!)
+filetype plugin on
+filetype indent on
+
+" Set mapleader
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast reloading of the .vimrc
+execute 'map <leader>s :source ' . g:abs_my_vimrc . '<cr>'
+
+" Fast editing of .vimrc
+execute 'map <leader>e :tabe ' . g:abs_my_vimrc . '<cr>'
+
+" When .vimrc is edited, reload it
+execute 'autocmd! bufwritepost */' . g:abs_my_vimrc . ' source ' . g:abs_my_vimrc
+
+" Fast compile python
+map <leader>py <esc>:%w !python2.7 <cr>
+
+" Fast trim line space.
+map <leader>tr <esc>ma<esc>:%s/ *$//g<cr><esc>:nohl<cr>`a
+
+" Fast save file.
+map <leader>w :w<cr>
+
+filetype off " necessary to make ftdetect work on Linux
+syntax on
+filetype on
+filetype plugin on
+filetype indent on
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Always show line number
+set number
+
+" Always show current position
+set ruler
+
+" Height of the command bar
+set cmdheight=2
+
+" Always show tab line
+set showtabline=2
+
+" Ignore case when searching
+set ignorecase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" Show cursor line.
+set cursorline
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set noai "Auto indent
+set nosi "Smart indent
+set nowrap "Wrap lines
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" Smart way to move between windows
+map <c-h> <c-w>h
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+
+" Fast tab switch
+for i in [1,2,3,4,5,6,7,8,9]
+    execute 'map <space>' . i . ' :tabn ' . i . '<cr>'
+endfor
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Status line
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Always show the status line
+set laststatus=2
+
+" Format the status line
+set statusline=\ %F%m%r%h\ %w\ %=CWD:\ %r%{getcwd()}%h\ %025.(\ Column:\ %c%V,\ Line:\ %l%)\ [%P]
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Set mouse
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" mouse setting
+if has('mouse')
+    set mouse=a
+    set ttymouse=xterm
+endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins settings and mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Tagbar ------------------------------------------------------
+" toggle tagbar display
+map <leader>tt :TagbarToggle<CR>
+" autofocus on tagbar open
+let g:tagbar_autofocus = 1
+
+" NERDTree ----------------------------------------------------
+" toggle nerdtree display
+map <leader>nt :NERDTreeToggle<CR>
+" open nerdtree with the current file selected
+nmap <Leader>nf :NERDTreeFind<CR>
+" don't show these file types
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+" show hidden file.
+let NERDTreeShowHidden=1
+" Set nerdtree symbols
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '~'
+
+" Tasklist ----------------------------------------------------
+" show pending tasks list
+map <Leader>tl :TaskList<CR>
+
+" CtrlP -------------------------------------------------------
+" file finder mapping
+let g:ctrlp_map = '<c-p>'
+" tags (symbols) in current file finder mapping
+nmap ,g :CtrlPBufTag<CR>
+" tags (symbols) in all files finder mapping
+nmap ,G :CtrlPBufTagAll<CR>
+" general code finder in all files mapping
+nmap ,f :CtrlPLine<CR>
+" recent files finder mapping
+nmap ,m :CtrlPMRUFiles<CR>
+" commands finder mapping
+nmap ,c :CtrlPCmdPalette<CR>
+" to be able to call CtrlP with default search text
+function! CtrlPWithSearchText(search_text, ctrlp_command_end)
+    execute ':CtrlP' . a:ctrlp_command_end
+    call feedkeys(a:search_text)
+endfunction
+" same as previous mappings, but calling with current word as default text
+nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
+nmap ,wG :call CtrlPWithSearchText(expand('<cword>'), 'BufTagAll')<CR>
+nmap ,wf :call CtrlPWithSearchText(expand('<cword>'), 'Line')<CR>
+nmap ,we :call CtrlPWithSearchText(expand('<cword>'), '')<CR>
+nmap ,pe :call CtrlPWithSearchText(expand('<cfile>'), '')<CR>
+nmap ,wm :call CtrlPWithSearchText(expand('<cword>'), 'MRUFiles')<CR>
+nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
+" don't change working directory
+let g:ctrlp_working_path_mode = 0
+" ignore these files and folders on file finder
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
+  \ 'file': '\.pyc$\|\.pyo$',
+  \ }
+
+" Syntastic ----------------------------------------------------
+" show list of errors and warnings on the current file
+nmap <leader>e :Errors<CR>
+" check also when just opened the file
+let g:syntastic_check_on_open = 1
+" don't put icons on the sign column (it hides the vcs status icons of signify)
+let g:syntastic_enable_signs = 0
+" custom icons (enable them if you use a patched font, and enable the previous
+" setting)
+"let g:syntastic_error_symbol = 'X'
+"let g:syntastic_warning_symbol = 'W'
+"let g:syntastic_style_error_symbol = 'X'
+"let g:syntastic_style_warning_symbol = 'W'
+
+" Python-mode --------------------------------------------------
+" don't use linter, we use syntastic for that
+let g:pymode_lint_on_write = 0
+let g:pymode_lint_signs = 0
+" don't fold python code on open
+let g:pymode_folding = 0
+" don't load rope by default. Change to 1 to use rope
+let g:pymode_rope = 0
+" open definitions on same window, and custom mappings for definitions and
+" occurrences
+let g:pymode_rope_goto_definition_bind = ',d'
+let g:pymode_rope_goto_definition_cmd = 'e'
+nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
+nmap ,o :RopeFindOccurrences<CR>
+
+" NeoComplCache ------------------------------------------------
+" most of them not documented because I'm not sure how they work
+" (docs aren't good, had to do a lot of trial and error to make
+" it play nice)
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_ignore_case = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_enable_auto_select = 1
+let g:neocomplcache_enable_fuzzy_completion = 1
+let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_fuzzy_completion_start_length = 1
+let g:neocomplcache_auto_completion_start_length = 1
+let g:neocomplcache_manual_completion_start_length = 1
+let g:neocomplcache_min_keyword_length = 1
+let g:neocomplcache_min_syntax_length = 1
+" complete with workds from any opened file
+let g:neocomplcache_same_filetype_lists = {}
+let g:neocomplcache_same_filetype_lists._ = '_'
+
+" Autoclose ---------------------------------------------------
+" Fix to let ESC work as espected with Autoclose plugin
+let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
+
+" Signify -----------------------------------------------------
+" this first setting decides in which order try to guess your current vcs
+" UPDATE it to reflect your preferences, it will speed up opening files
+let g:signify_vcs_list = [ 'git', 'hg' ]
+" mappings to jump to changed blocks
+nmap <leader>sn <plug>(signify-next-hunk)
+nmap <leader>sp <plug>(signify-prev-hunk)
+" nice colors
+highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
+highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable syntax highlighting
+syntax enable
+"
+" Set colorscheme
+colorscheme desert
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+" Tab color
+hi TabLine           cterm=none      ctermfg=4    ctermbg=2   gui=underline guibg=#6c6c6c guifg=White
+hi TabLineSel        cterm=none      ctermfg=3    ctermbg=0   gui=NONE guifg=White
+hi TabLineFill       cterm=reverse   ctermfg=2    gui=reverse
+hi TabLineNr         cterm=underline ctermbg=238   guibg=#444444
+hi TabLineNrSel      cterm=bold      ctermfg=45    guifg=#00d7ff
+hi TabLineMore       cterm=underline ctermfg=White ctermbg=236   gui=underline guifg=White   guibg=#303030
+hi TabLineSplitNr    cterm=underline ctermfg=148  ctermbg=240 gui=underline,italic guifg=#afd700   guibg=#6c6c6c
+hi TabLineSplitNrSel cterm=NONE      ctermfg=148  ctermbg=236 gui=NONE,italic      guifg=#afd700   guibg=#303030
+
+" Status color
+hi StatusLine        cterm=underline ctermfg=2    ctermbg=4   gui=underline guibg=#6c6c6c guifg=White
+hi StatusLineNC      cterm=bold      ctermfg=0    ctermbg=7   gui=NONE guifg=White
+
+" Poped menu color
+hi Pmenu             cterm=bold      ctermfg=2    ctermbg=4   gui=NONE guibg=#6c6c6c guifg=White
+hi PmenuSel          cterm=bold      ctermfg=2    ctermbg=6   gui=NONE guibg=#6c6c6c guifg=White
+
+" Diff colors
+highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+

@@ -1,0 +1,10 @@
+#hardstatus alwayslastline " %-Lw%{= BG}%n%f %t%{-}%+Lw%{= gW} %=| %M %d %0c:%s "
+#hardstatus alwayslastline "%{=u .r} %-w%<%{=ub .Y}%n %t%{=u .r}%+w %=| %M %d %0c:%s "
+vbell off
+caption always "%{=u .r} %-w%<%{=ub .Y}%n %t%{=u .r}%+w %=| %M %d %0c:%s "
+hardstatus alwaysignore
+startup_message off
+defutf8 on
+
+# make the shell in every window as your login shell
+shell -$SHELL
